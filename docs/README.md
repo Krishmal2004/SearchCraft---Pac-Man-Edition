@@ -1,4 +1,4 @@
-# SE3062 Group Assignment — Search Algorithms in Pac-Man
+# SE3062 Group Assignment - Search Algorithms in Pac-Man
 
 > **Course:** SE3062 Intelligent Systems (Year 3 · 2026) · **Lecturer:** Mr. Jeewaka Perera
 > **Weight:** 10% of final grade · **Group size:** 4 members
