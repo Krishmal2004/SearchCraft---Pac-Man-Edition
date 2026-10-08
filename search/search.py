@@ -86,13 +86,58 @@ def depthFirstSearch(problem: SearchProblem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    fringe = util.Stack()
+    fringe.push((problem.getStartState(), []))
+    visited = set()
+    
+    while not fringe.isEmpty():
+        state, actions = fringe.pop()
+        
+        if problem.isGoalState(state):
+            return actions
+            
+        if state not in visited:
+            visited.add(state)
+            
+            for nextState, action, cost in problem.getSuccessors(state):
+                if nextState not in visited:
+                    fringe.push((nextState, actions + [action]))
+                    
+    return []
 
 def breadthFirstSearch(problem: SearchProblem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    """
+    Search the shallowest nodes in the search tree first.
+    Graph search implementation using a FIFO Queue.
+    """
+    # 1. Create a Queue for the fringe (FIFO: First In First Out)
+    fringe = util.Queue()
+    
+    # 2. Push start state onto fringe: (state, actions)
+    fringe.push((problem.getStartState(), []))
+    
+    # 3. Track visited states
+    visited = set()
+    
+    while not fringe.isEmpty():
+        # Pop the oldest node in the queue
+        state, actions = fringe.pop()
+        
+        # Check goal condition
+        if problem.isGoalState(state):
+            return actions
+            
+        # If not expanded yet
+        if state not in visited:
+            visited.add(state)
+            
+            # Add all valid successors
+            for nextState, action, cost in problem.getSuccessors(state):
+                if nextState not in visited:
+                    fringe.push((nextState, actions + [action]))
+                    
+    return []
+
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
