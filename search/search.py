@@ -122,9 +122,28 @@ def breadthFirstSearch(problem: SearchProblem):
                     
     return []
 
-# Uniform Cost Search
-def uniformCostSearch(problem: SearchProblem):
 
+# Uniform Cost Search (UCS) 
+def uniformCostSearch(problem: SearchProblem):
+    """Search the node of least total cost first."""
+    fringe = util.PriorityQueue()
+    fringe.push((problem.getStartState(), [], 0), 0)
+    visited = set()
+
+    while not fringe.isEmpty():
+        state, actions, current_cost = fringe.pop()
+
+        if problem.isGoalState(state):
+            return actions
+
+        if state not in visited:
+            visited.add(state)
+
+            for nextState, action, stepCost in problem.getSuccessors(state):
+                if nextState not in visited:
+                    new_cost = current_cost + stepCost
+                    fringe.push((nextState, actions + [action], new_cost), new_cost)
+    
     return []
 
 
@@ -134,9 +153,32 @@ def nullHeuristic(state, problem=None):
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+
+
 # A* Search
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
-   
+    """Search the node that has the lowest combined cost and heuristic first."""
+    fringe = util.PriorityQueue()
+    start_state = problem.getStartState()
+    start_h = heuristic(start_state, problem)
+    fringe.push((start_state, [], 0), 0 + start_h)
+    visited = set()
+
+    while not fringe.isEmpty():
+        state, actions, current_g = fringe.pop()
+
+        if problem.isGoalState(state):
+            return actions
+
+        if state not in visited:
+            visited.add(state)
+
+            for nextState, action, stepCost in problem.getSuccessors(state):
+                if nextState not in visited:
+                    next_g = current_g + stepCost
+                    next_f = next_g + heuristic(nextState, problem)
+                    fringe.push((nextState, actions + [action], next_g), next_f)
+    
 
     return []
 
